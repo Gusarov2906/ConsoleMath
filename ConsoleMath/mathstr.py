@@ -40,8 +40,8 @@ def my_subtraction(x, y):
 # Деление
 def my_division(x, y):
     try:
-        x = int(x)
-        y = int(y)
+        x = float(x)
+        y = float(y)
         res = x / y
     except Exception as e:
         print("Division error!")
@@ -63,6 +63,101 @@ def my_exponentiation(x, y):
     return res
 
 
+def my_exponentiation_for_mas(mas):
+    flag1 = False
+    while True:
+        for i in range(len(mas)):
+            if mas[i] == "^":
+                flag1 = True
+                mas[i] = my_exponentiation(mas[i - 1], mas[i + 1])
+                mas[i - 1] = " "
+                mas[i + 1] = mas[i]
+                mas[i] = " "
+                mas = convert_to_str(mas)
+                mas = convert_to_mas(mas)
+                print(mas)
+                break
+            flag1 = False
+        if flag1 is False:
+            break
+
+
+def my_division_for_mas(mas):
+    flag1 = False
+    while True:
+        for i in range(len(mas)):
+            if mas[i] == "/":
+                flag1 = True
+                mas[i] = my_division(mas[i - 1], mas[i + 1])
+                mas[i - 1] = " "
+                mas[i + 1] = mas[i]
+                mas[i] = " "
+                mas = convert_to_str(mas)
+                mas = convert_to_mas(mas)
+                print(mas)
+                break
+            flag1 = False
+        if flag1 is False:
+            break
+
+
+def my_multiply_for_mas(mas):
+    flag1 = False
+    while True:
+        for i in range(len(mas)):
+            if mas[i] == "*":
+                flag1 = True
+                mas[i] = my_multiply(mas[i - 1], mas[i + 1])
+                mas[i - 1] = " "
+                mas[i + 1] = mas[i]
+                mas[i] = " "
+                mas = convert_to_str(mas)
+                mas = convert_to_mas(mas)
+                print(mas)
+                break
+            flag1 = False
+        if flag1 is False:
+            break
+
+
+def my_addition_for_mas(mas):
+    flag1 = False
+    while True:
+        for i in range(len(mas)):
+            if mas[i] == "+":
+                flag1 = True
+                mas[i] = my_addition(mas[i - 1], mas[i + 1])
+                mas[i - 1] = " "
+                mas[i + 1] = mas[i]
+                mas[i] = " "
+                mas = convert_to_str(mas)
+                mas = convert_to_mas(mas)
+                print(mas)
+                break
+            flag1 = False
+        if flag1 is False:
+            break
+
+
+def my_subtraction_for_mas(mas):
+    flag1 = False
+    while True:
+        for i in range(len(mas)):
+            if mas[i] == "^":
+                flag1 = True
+                mas[i] = my_subtraction(mas[i - 1], mas[i + 1])
+                mas[i - 1] = " "
+                mas[i + 1] = mas[i]
+                mas[i] = " "
+                mas = convert_to_str(mas)
+                mas = convert_to_mas(mas)
+                print(mas)
+                break
+            flag1 = False
+        if flag1 is False:
+            break
+
+
 """
 # Преобразование строки с учетом скобок
 def convert_str(str_value):
@@ -82,35 +177,75 @@ def convert_str(str_value):
 """
 
 
+def is_arithmetic_sign(char):
+    if char == "+" or char == "-" or char == "/" or char == "*" or char == "^":
+        return True
+    return False
+
+
+def is_indentation(char):
+    if char == " " or char == "\n" or char == "\t":
+        return True
+    return False
+
+
 def convert_to_mas(str_value):
     mas = []
     val = ""
     flag = False
     for i in range(len(str_value)):
-        if str_value[i].isdigit():
+        if str_value[i].isdigit() or str_value[i] == '.':
             val += str_value[i]
             flag = True
             continue
         if flag:
             mas.append(val)
             flag = False
-        mas.append(str_value[i])
+        if is_arithmetic_sign(str_value[i]):
+            mas.append(str_value[i])
+        elif is_indentation(str_value[i]):
+            continue
+        else:
+            print("Invalid symbol")
+            return None
         val = ""
     if flag:
         mas.append(val)
     return mas
 
 
+def convert_to_str(mas):
+    string = ""
+    for i in range(len(mas)):
+        string += str(mas[i])
+    return string
+
 """
 def solve(mas):
-    for i in range(len(mas)):
-        if mas[i] == "^":"""
-
+    flag1 = False
+    while True:
+        for i in range(len(mas)):
+            if mas[i] == "^":
+                flag1 = True
+                mas[i] = my_exponentiation(mas[i - 1], mas[i + 1])
+                mas[i - 1] = " "
+                mas[i + 1] = mas[i]
+                mas[i] = " "
+                mas = convert_to_str(mas)
+                mas = convert_to_mas(mas)
+                print(mas)
+                break
+            flag1 = False
+        if flag1 is False:
+            break
+"""
 
 def main():
     string = input("Write str: ")
     mas = convert_to_mas(string)
     print(mas)
+    my_division_for_mas(mas)
+    return 0
 
 
 main()
