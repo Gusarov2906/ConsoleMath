@@ -1,8 +1,8 @@
 # Умножение
 def my_multiply(x, y):
     try:
-        x = int(x)
-        y = int(y)
+        x = float(x)
+        y = float(y)
         res = x * y
     except Exception as e:
         print("Multiply error!")
@@ -14,8 +14,8 @@ def my_multiply(x, y):
 # Сложение
 def my_addition(x, y):
     try:
-        x = int(x)
-        y = int(y)
+        x = float(x)
+        y = float(y)
         res = x + y
     except Exception as e:
         print("Addition error!")
@@ -27,8 +27,8 @@ def my_addition(x, y):
 # Вычитание
 def my_subtraction(x, y):
     try:
-        x = int(x)
-        y = int(y)
+        x = float(x)
+        y = float(y)
         res = x - y
     except Exception as e:
         print("Subtraction error!")
@@ -53,8 +53,8 @@ def my_division(x, y):
 # Возведение в степень
 def my_exponentiation(x, y):
     try:
-        x = int(x)
-        y = int(y)
+        x = float(x)
+        y = float(y)
         res = x ** y
     except Exception as e:
         print("Exponentiation error!")
@@ -73,16 +73,17 @@ def my_exponentiation_for_mas(mas):
                 mas[i - 1] = " "
                 mas[i + 1] = mas[i]
                 mas[i] = " "
-                mas = convert_to_str(mas)
-                mas = convert_to_mas(mas)
-                print(mas)
-                break
+                # print(mas)
+                continue
             flag1 = False
+        mas = convert_to_str(mas)
+        mas = convert_to_mas(mas)
         if flag1 is False:
             break
+    return mas
 
 
-def my_division_for_mas(mas):
+def my_division_and_multiply_for_mas(mas):
     flag1 = False
     while True:
         for i in range(len(mas)):
@@ -92,15 +93,25 @@ def my_division_for_mas(mas):
                 mas[i - 1] = " "
                 mas[i + 1] = mas[i]
                 mas[i] = " "
-                mas = convert_to_str(mas)
-                mas = convert_to_mas(mas)
-                print(mas)
-                break
+                # print(mas)
+                continue
+            if mas[i] == "*":
+                flag1 = True
+                mas[i] = my_multiply(mas[i - 1], mas[i + 1])
+                mas[i - 1] = " "
+                mas[i + 1] = mas[i]
+                mas[i] = " "
+                # print(mas)
+                continue
             flag1 = False
+        mas = convert_to_str(mas)
+        mas = convert_to_mas(mas)
         if flag1 is False:
             break
+    return mas
 
 
+"""
 def my_multiply_for_mas(mas):
     flag1 = False
     while True:
@@ -111,16 +122,18 @@ def my_multiply_for_mas(mas):
                 mas[i - 1] = " "
                 mas[i + 1] = mas[i]
                 mas[i] = " "
-                mas = convert_to_str(mas)
-                mas = convert_to_mas(mas)
-                print(mas)
-                break
+                # print(mas)
+                continue
             flag1 = False
+        mas = convert_to_str(mas)
+        mas = convert_to_mas(mas)
         if flag1 is False:
             break
+    return mas
+"""
 
 
-def my_addition_for_mas(mas):
+def my_addition_and_subtraction_for_mas(mas):
     flag1 = False
     while True:
         for i in range(len(mas)):
@@ -130,15 +143,25 @@ def my_addition_for_mas(mas):
                 mas[i - 1] = " "
                 mas[i + 1] = mas[i]
                 mas[i] = " "
-                mas = convert_to_str(mas)
-                mas = convert_to_mas(mas)
-                print(mas)
-                break
+                # print(mas)
+                continue
+            if mas[i] == "-":
+                flag1 = True
+                mas[i] = my_subtraction(mas[i - 1], mas[i + 1])
+                mas[i - 1] = " "
+                mas[i + 1] = mas[i]
+                mas[i] = " "
+                # print(mas)
+                continue
             flag1 = False
+        mas = convert_to_str(mas)
+        mas = convert_to_mas(mas)
         if flag1 is False:
             break
+    return mas
 
 
+"""
 def my_subtraction_for_mas(mas):
     flag1 = False
     while True:
@@ -149,15 +172,15 @@ def my_subtraction_for_mas(mas):
                 mas[i - 1] = " "
                 mas[i + 1] = mas[i]
                 mas[i] = " "
-                mas = convert_to_str(mas)
-                mas = convert_to_mas(mas)
-                print(mas)
-                break
+                # print(mas)
+                continue
             flag1 = False
+        mas = convert_to_str(mas)
+        mas = convert_to_mas(mas)
         if flag1 is False:
             break
-
-
+    return mas
+"""
 """
 # Преобразование строки с учетом скобок
 def convert_str(str_value):
@@ -220,31 +243,28 @@ def convert_to_str(mas):
         string += str(mas[i])
     return string
 
-"""
+
 def solve(mas):
-    flag1 = False
-    while True:
-        for i in range(len(mas)):
-            if mas[i] == "^":
-                flag1 = True
-                mas[i] = my_exponentiation(mas[i - 1], mas[i + 1])
-                mas[i - 1] = " "
-                mas[i + 1] = mas[i]
-                mas[i] = " "
-                mas = convert_to_str(mas)
-                mas = convert_to_mas(mas)
-                print(mas)
-                break
-            flag1 = False
-        if flag1 is False:
-            break
-"""
+    mas = my_exponentiation_for_mas(mas)
+    mas = my_division_and_multiply_for_mas(mas)
+    mas = my_addition_and_subtraction_for_mas(mas)
+
+    try:
+        mas[0] = int(mas[0])
+    except Exception as e:
+        mas[0] = float(mas[0])
+        print(e)
+    # print(mas)
+    return mas
+
 
 def main():
-    string = input("Write str: ")
+    string = input(">>> ")
     mas = convert_to_mas(string)
-    print(mas)
-    my_division_for_mas(mas)
+    # print(mas)
+    mas = solve(mas)
+    string = convert_to_str(mas)
+    print(f'>>> {string}')
     return 0
 
 
