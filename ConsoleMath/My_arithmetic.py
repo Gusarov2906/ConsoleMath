@@ -1,3 +1,5 @@
+from MathStr import My_converting
+
 # Умножение
 def my_multiply(x, y):
     try:
@@ -77,8 +79,8 @@ def my_exponentiation_for_mas(mas):
                 # print(mas)
                 continue
             flag1 = False
-        mas = convert_to_str(mas)
-        mas = convert_to_mas(mas)
+        mas = My_converting.convert_to_str(mas)
+        mas = My_converting.convert_to_mas(mas)
         if flag1 is False:
             break
     return mas
@@ -106,8 +108,8 @@ def my_division_and_multiply_for_mas(mas):
                 # print(mas)
                 continue
             flag1 = False
-        mas = convert_to_str(mas)
-        mas = convert_to_mas(mas)
+        mas = My_converting.convert_to_str(mas)
+        mas = My_converting.convert_to_mas(mas)
         if flag1 is False:
             break
     return mas
@@ -157,8 +159,8 @@ def my_addition_and_subtraction_for_mas(mas):
                 # print(mas)
                 continue
             flag1 = False
-        mas = convert_to_str(mas)
-        mas = convert_to_mas(mas)
+        mas = My_converting.convert_to_str(mas)
+        mas = My_converting.convert_to_mas(mas)
         if flag1 is False:
             break
     return mas
