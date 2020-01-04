@@ -63,6 +63,7 @@ def my_exponentiation(x, y):
     return res
 
 
+# функция всех возведений в степень слева на права по порядку
 def my_exponentiation_for_mas(mas):
     flag1 = False
     while True:
@@ -83,6 +84,7 @@ def my_exponentiation_for_mas(mas):
     return mas
 
 
+# функция всех делений и умножений слева на права по порядку
 def my_division_and_multiply_for_mas(mas):
     flag1 = False
     while True:
@@ -133,6 +135,7 @@ def my_multiply_for_mas(mas):
 """
 
 
+# функция всех сложения и вычитания слева на права по порядку
 def my_addition_and_subtraction_for_mas(mas):
     flag1 = False
     while True:
@@ -200,18 +203,21 @@ def convert_str(str_value):
 """
 
 
+# bool функция на проверку на арифметический символ
 def is_arithmetic_sign(char):
     if char == "+" or char == "-" or char == "/" or char == "*" or char == "^":
         return True
     return False
 
 
+# bool функция на проверку пробела, табуляции и переноса строки в символе
 def is_indentation(char):
     if char == " " or char == "\n" or char == "\t":
         return True
     return False
 
 
+# функция делает из строки массив, в котором отдельно лежат по исходному порядку в строке числа и арифметические знаки
 def convert_to_mas(str_value):
     mas = []
     val = ""
@@ -237,6 +243,7 @@ def convert_to_mas(str_value):
     return mas
 
 
+# функция собирает из массива строку
 def convert_to_str(mas):
     string = ""
     for i in range(len(mas)):
@@ -244,16 +251,30 @@ def convert_to_str(mas):
     return string
 
 
+# Функия, проводящая вычисления коненчного ответа, вызывающая в нужном порядке арифметические действия
 def solve(mas):
     mas = my_exponentiation_for_mas(mas)
     mas = my_division_and_multiply_for_mas(mas)
     mas = my_addition_and_subtraction_for_mas(mas)
+    # print(type(mas[0]))
+    #  Проверка на возможность преобразования в int и если возможно, то преобразует, иначе оставляет float
+    if len(mas) == 1:
+        try:
+            mas[0] = float(mas[0])
+            if mas[0] == int(mas[0]):
+                mas[0] = int(mas[0])
+        except Exception as e:
+            mas[0] = float(mas[0])
+            print(e)
+    elif len(mas) == 2:
+        try:
+            mas[1] = float(mas[1])
+            if mas[1] == int(mas[1]):
+                mas[1] = int(mas[1])
+        except Exception as e:
+            mas[1] = float(mas[1])
+            print(e)
 
-    try:
-        mas[0] = int(mas[0])
-    except Exception as e:
-        mas[0] = float(mas[0])
-        print(e)
     # print(mas)
     return mas
 
