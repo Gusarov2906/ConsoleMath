@@ -23,9 +23,23 @@ def is_arithmetic_sign(char):
     return False
 
 
-# bool функция на проверку на арифметический символ
+# bool функция на проверку на символ скобки символ
 def is_parentheses_sign(char):
     if char == "a" or char == "e" or char == f'a{int}' or char == "en":
+        return True
+    return False
+
+
+# bool функция на проверку на символ открывающейся скобки символ
+def is_parentheses_open_sign(char):
+    if char == "a" or char == f'a{int}':
+        return True
+    return False
+
+
+# bool функция на проверку на символ закрывающийся скобки символ
+def is_parentheses_close_sign(char):
+    if char == "a" or char == f'a{int}':
         return True
     return False
 
@@ -44,6 +58,8 @@ def convert_to_mas(str_value):
     is_negative = False
     is_number = False
     is_parentheses = False
+    count_open_parentheses = 0
+    count_closed_parentheses = 0
     for i in range(len(str_value)):
         if is_parentheses:
             is_parentheses = False
@@ -52,7 +68,7 @@ def convert_to_mas(str_value):
             if str_value[i] == "-":
                 is_negative = True
         else:
-            if is_arithmetic_sign(str_value[i - 1]) or is_indentation(str_value[i-1]):
+            if is_arithmetic_sign(str_value[i - 1]) or is_indentation(str_value[i - 1]):
                 if str_value[i] == "-":
                     is_negative = True
         if str_value[i].isdigit() or str_value[i] == '.':
@@ -70,18 +86,29 @@ def convert_to_mas(str_value):
             is_number = False
         if is_arithmetic_sign(str_value[i]):
             mas.append(str_value[i])
-        elif i < len(str_value) - 1:
-            if is_parentheses_sign(str_value[i]):
+        elif i < len(str_value) - 1 and is_parentheses_sign(str_value[i]):
+            if is_parentheses_open_sign(str_value[i]):
+                count_open_parentheses += 1
+                mas.append(str_value[i] + str_value[i + 1])
+                is_parentheses = True
+            else:
+                count_closed_parentheses += 1
                 mas.append(str_value[i] + str_value[i + 1])
                 is_parentheses = True
         elif is_indentation(str_value[i]):
             continue
         else:
-            print("Invalid symbol")
-            return None
+            print(f'Invalid symbol: {str_value[i]}')
+            exit()
         val = ""
     if is_number:
         mas.append(val)
+    try:
+        if count_closed_parentheses != count_open_parentheses:
+            raise Exception("Error with parentheses!")
+    except Exception as e:
+        print(e)
+        exit()
     return mas
 
 
