@@ -116,28 +116,6 @@ def my_division_and_multiply_for_mas(mas):
     return mas
 
 
-"""
-def my_multiply_for_mas(mas):
-    flag1 = False
-    while True:
-        for i in range(len(mas)):
-            if mas[i] == "*":
-                flag1 = True
-                mas[i] = my_multiply(mas[i - 1], mas[i + 1])
-                mas[i - 1] = " "
-                mas[i + 1] = mas[i]
-                mas[i] = " "
-                # print(mas)
-                continue
-            flag1 = False
-        mas = convert_to_str(mas)
-        mas = convert_to_mas(mas)
-        if flag1 is False:
-            break
-    return mas
-"""
-
-
 # функция всех сложения и вычитания слева на права по порядку
 def my_addition_and_subtraction_for_mas(mas):
     flag1 = False
@@ -173,25 +151,3 @@ def solve_without_parentheses(mas):
     mas = my_division_and_multiply_for_mas(mas)
     mas = my_addition_and_subtraction_for_mas(mas)
     return mas
-
-
-"""
-def my_subtraction_for_mas(mas):
-    flag1 = False
-    while True:
-        for i in range(len(mas)):
-            if mas[i] == "^":
-                flag1 = True
-                mas[i] = my_subtraction(mas[i - 1], mas[i + 1])
-                mas[i - 1] = " "
-                mas[i + 1] = mas[i]
-                mas[i] = " "
-                # print(mas)
-                continue
-            flag1 = False
-        mas = convert_to_str(mas)
-        mas = convert_to_mas(mas)
-        if flag1 is False:
-            break
-    return mas
-"""
