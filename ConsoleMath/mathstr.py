@@ -26,19 +26,15 @@ def solve(mas):
         if len(mas) > 3:
             new_mas = mas[n1:n2]
             n -= 1
-            new_mas = My_arithmetic.my_exponentiation_for_mas(new_mas)
-            new_mas = My_arithmetic.my_division_and_multiply_for_mas(new_mas)
-            new_mas = My_arithmetic.my_addition_and_subtraction_for_mas(new_mas)
+            new_mas = My_arithmetic.solve_without_parentheses(new_mas)
             new_mas.pop(0)
             for i in range(n1, n2 + 1):
                 mas.pop(n1)
-            mas.insert(n1 + 1, new_mas[0])
+            mas.insert(n1, new_mas[0])
         else:
             new_mas = mas
             n -= 1
-            new_mas = My_arithmetic.my_exponentiation_for_mas(new_mas)
-            new_mas = My_arithmetic.my_division_and_multiply_for_mas(new_mas)
-            new_mas = My_arithmetic.my_addition_and_subtraction_for_mas(new_mas)
+            new_mas = My_arithmetic.solve_without_parentheses(new_mas)
             mas = new_mas
     # print(type(mas[0]))
     #  Проверка на возможность преобразования в int и если возможно, то преобразует, иначе оставляет float
