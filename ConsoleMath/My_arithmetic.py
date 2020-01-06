@@ -1,5 +1,6 @@
 from MathStr import My_converting
 
+
 # Умножение
 def my_multiply(x, y):
     try:
@@ -142,27 +143,35 @@ def my_addition_and_subtraction_for_mas(mas):
     flag1 = False
     while True:
         for i in range(len(mas)):
-            if mas[i] == "+":
-                flag1 = True
-                mas[i] = my_addition(mas[i - 1], mas[i + 1])
-                mas[i - 1] = " "
-                mas[i + 1] = mas[i]
-                mas[i] = " "
-                # print(mas)
-                continue
-            if mas[i] == "-":
-                flag1 = True
-                mas[i] = my_subtraction(mas[i - 1], mas[i + 1])
-                mas[i - 1] = " "
-                mas[i + 1] = mas[i]
-                mas[i] = " "
-                # print(mas)
-                continue
+            if i > 0:
+                if mas[i] == "+":
+                    flag1 = True
+                    mas[i] = my_addition(mas[i - 1], mas[i + 1])
+                    mas[i - 1] = " "
+                    mas[i + 1] = mas[i]
+                    mas[i] = " "
+                    # print(mas)
+                    continue
+                if mas[i] == "-":
+                    flag1 = True
+                    mas[i] = my_subtraction(mas[i - 1], mas[i + 1])
+                    mas[i - 1] = " "
+                    mas[i + 1] = mas[i]
+                    mas[i] = " "
+                    # print(mas)
+                    continue
             flag1 = False
         mas = My_converting.convert_to_str(mas)
         mas = My_converting.convert_to_mas(mas)
         if flag1 is False:
             break
+    return mas
+
+
+def solve_without_parentheses(mas):
+    mas = my_exponentiation_for_mas(mas)
+    mas = my_division_and_multiply_for_mas(mas)
+    mas = my_addition_and_subtraction_for_mas(mas)
     return mas
 
 
