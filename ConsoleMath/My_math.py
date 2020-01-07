@@ -1,5 +1,5 @@
-from MathStr import My_arithmetic
-from MathStr import My_converting
+import My_arithmetic
+import My_converting
 
 
 #  Проверка на возможность преобразования в int и если возможно, то преобразует, иначе оставляет float

@@ -1,6 +1,6 @@
-from MathStr import My_math
-from MathStr import My_converting
-from MathStr import Database
+import My_math
+import My_converting
+import Database
 
 
 def main():

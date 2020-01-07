@@ -1,4 +1,4 @@
-from MathStr import My_converting
+import My_converting
 
 
 # Умножение
