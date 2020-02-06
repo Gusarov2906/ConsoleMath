@@ -1,7 +1,7 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include<stdlib.h>
-
+#define SIZE 255
 using namespace std;
 
 struct list
@@ -129,9 +129,16 @@ bool isPoint(char value)
 }
 int main()
 {
-	char* str = (char*)calloc(255 , sizeof(char));
+	char* str = (char*)malloc(SIZE*sizeof(char));
+	/*
+	for (int i = 0; i < SIZE; i++) //fill all str by symbol"E" which means that is empty
+	{
+		str[i] = char(69);
+	}
+	*/
 	scanf("%s", str);
-	for (int i = 0; i < 10; i++)
+	int i = 0;
+	while(1)
 	{
 		if (isNumber(str[i]))
 			printf("Number: %c \n",str[i]);
@@ -141,12 +148,11 @@ int main()
 			else
 				if (isSign(str[i]))
 					printf("Sign: %c \n", str[i]);
+		i++;
+		if (str[i] == NULL)
+			break;
 	}
-	if (isNumber(str[0])&&isPoint(str[1])&& isNumber(str[0])&&isSign(str[3]))
-	{
-		list test = *init(str);
-		//printf("%s", str);
-		listprint(&test);
-	}
+
+
 }
 
