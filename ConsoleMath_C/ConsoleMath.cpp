@@ -84,7 +84,7 @@ bool isNumber(char value)
 	if (value > 47 && value < 58)
 		return true;
 	else
-		printf("not a number");
+		//printf("not a number");
 		return false;
 }
 
@@ -104,7 +104,7 @@ bool isSign(char value)
 	if (value == 42 || value == 43 || value == 45 || value == 47 || value == 94)
 		return true;
 	else
-		printf("not a sign");
+		//printf("not a sign");
 	return false;
 }
 
@@ -124,13 +124,24 @@ bool isPoint(char value)
 	if (value == 46)
 		return true;
 	else
-		printf("not a sign");
+		//printf("not a sign");
 	return false;
 }
 int main()
 {
-	char* str = (char*)malloc(255 * sizeof(char));
+	char* str = (char*)calloc(255 , sizeof(char));
 	scanf("%s", str);
+	for (int i = 0; i < 10; i++)
+	{
+		if (isNumber(str[i]))
+			printf("Number: %c \n",str[i]);
+		else
+			if (isPoint(str[i]))
+				printf("Point: %c \n", str[i]);
+			else
+				if (isSign(str[i]))
+					printf("Sign: %c \n", str[i]);
+	}
 	if (isNumber(str[0])&&isPoint(str[1])&& isNumber(str[0])&&isSign(str[3]))
 	{
 		list test = *init(str);
