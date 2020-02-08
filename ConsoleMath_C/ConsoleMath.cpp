@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include <math.h>
 #define SIZE 255
 using namespace std;
 char** add_to_mas(char** mas, int position, char* elem, int number_chars)
@@ -148,6 +149,35 @@ bool isPoint(char value)
 	return false;
 }
 
+float convertChatToFloat(char* val)
+{
+	int i = 0;
+	int numBeforeDot = 0;
+	int numAfterDot = 0;
+	while (val[i] != char(46) && val[i] != NULL)
+	{
+		numBeforeDot++;
+		i++;
+	}
+	while (val[i] != NULL)
+	{
+		numAfterDot++;
+		i++;;
+	}
+	if (numAfterDot > 0)
+		numAfterDot--;
+	float num =0;
+	for (int j = 0; j < numBeforeDot; j++)
+	{
+		num += (int(val[numBeforeDot - j-1])-48) * pow(10,j);
+	}
+	for (int j = 0; j < numAfterDot; j++)
+	{
+		num+= (int(val[numBeforeDot + numAfterDot - j]) - 48) / pow(10, numAfterDot-j);
+	}
+	printf("%f", num);
+	return num;
+}
 
 void f()
 {
@@ -215,7 +245,7 @@ void convert_to_list(char* str)
 			continue;
 		}
 		else
-			if (isPoint(str[i]))
+				if (isPoint(str[i]))
 			{
 				if (prevIsPoint)
 				{
@@ -266,12 +296,13 @@ void convert_to_list(char* str)
 					i++;
 					k++;
 				}
+				
 
 				
 			}
 		if (str[i] == NULL)
 		{
-			print_mas(mas, k);
+			print_mas(mas, k );
 			break;
 		}
 	}
@@ -322,8 +353,8 @@ int main()
 	scanf("%s", str);
 	
 	//f();
-
-	convert_to_list(str);
+	convertChatToFloat(str);
+	//convert_to_list(str);
 }
 
 
