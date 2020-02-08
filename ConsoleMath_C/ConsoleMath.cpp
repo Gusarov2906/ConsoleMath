@@ -127,16 +127,148 @@ bool isPoint(char value)
 		//printf("not a sign");
 	return false;
 }
+
+
+void f()
+{
+	char* x, * tmp;
+
+	x = (char*)calloc(10,sizeof(char));
+
+	
+	if (x != NULL)
+	{
+		for (int i = 0; i < 9; i++)
+		{
+
+			x[i] = char(52 + i%2);
+		}
+		x[9] = '\0';
+		printf("\n%s\n", x);
+		tmp = (char*)realloc(x, 512);
+	
+		if (tmp != NULL)
+		{
+			for (int i = 9; i < 510; i++)
+			{
+				tmp[i] = char(52 + i % 2);
+			}
+			tmp[510] = '\0';
+			x = tmp;
+		}
+		printf("\n%s\n", x);
+		free(x);
+	}
+}
+/*
+void convert_to_list(char* str)
+{
+	int i = 0;
+	bool prevIsPoint = false;
+	bool isFloatNumber = false;
+	int j = 0;
+	int k = 0;
+	char* tmp;
+	char* x;
+
+	while (1)
+	{
+		if (!isFloatNumber)
+		{
+			if (x != NULL)
+			{
+				x = (char*)malloc(1 * sizeof(char));
+				tmp = (char*)realloc(x, 1 * sizeof(char));
+				if (tmp != NULL)
+				{
+					x = tmp;
+					tmp[0] = char(0);
+				}
+				free(x);
+			}
+			if (isNumber(str[i]))
+			{
+				tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
+				tmp[j] = (char)str[i];
+				j++;
+				i++;
+				isFloatNumber = true;
+				prevIsPoint = true;
+				continue;
+			}
+		}
+	}
+}
+
+*/
 int main()
 {
-	char* str = (char*)malloc(SIZE*sizeof(char));
 	/*
-	for (int i = 0; i < SIZE; i++) //fill all str by symbol"E" which means that is empty
-	{
-		str[i] = char(69);
-	}
-	*/
+	char* str = (char*)malloc(SIZE*sizeof(char));
 	scanf("%s", str);
+	*/
+	f();
+
+	//convert_to_list(str);
+}
+
+
+/*
+while (1)
+{
+	if (!isFloatNumber)
+	{
+		if (tmp != NULL)
+		{
+			tmp = (char*)realloc(tmp, 1 * sizeof(char));
+			tmp[0] = char(0);
+		}
+	}
+	if (isNumber(str[i]))
+	{
+		tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
+		tmp[j] = (char)str[i];
+		j++;
+		i++;
+		isFloatNumber = true;
+		prevIsPoint = true;
+		continue;
+	}
+	else
+		if (isPoint(str[i]))
+		{
+			if (prevIsPoint)
+			{
+				tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
+				tmp[j] = str[i];
+				i++;
+				j++;
+				continue;
+			}
+
+		}
+		else
+		{
+			isFloatNumber = false;
+			list lst = *init(tmp);
+			listprint(&lst);
+			j = 0;
+			i++;
+			if (isSign(str[i]))
+				printf("Sign: %c \n", str[i]);
+		}
+	if (str[i] == NULL)
+		break;
+}
+*/
+
+/*
+for (int i = 0; i < SIZE; i++) //fill all str by symbol"E" which means that is empty
+{
+	str[i] = char(69);
+}
+*/
+/*
 	int i = 0;
 	while(1)
 	{
@@ -153,6 +285,8 @@ int main()
 			break;
 	}
 
+	*/
 
-}
+
+
 
