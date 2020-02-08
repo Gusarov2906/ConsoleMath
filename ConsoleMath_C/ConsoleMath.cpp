@@ -149,7 +149,7 @@ bool isPoint(char value)
 	return false;
 }
 
-float convertChatToFloat(char* val)
+double convertChatToDouble(char* val)
 {
 	int i = 0;
 	int numBeforeDot = 0;
@@ -166,14 +166,14 @@ float convertChatToFloat(char* val)
 	}
 	if (numAfterDot > 0)
 		numAfterDot--;
-	float num =0;
+	double num =0;
 	for (int j = 0; j < numBeforeDot; j++)
 	{
 		num += (int(val[numBeforeDot - j-1])-48) * pow(10,j);
 	}
 	for (int j = 0; j < numAfterDot; j++)
 	{
-		num+= (int(val[numBeforeDot + numAfterDot - j]) - 48) / pow(10, numAfterDot-j);
+		num+= (double(val[numBeforeDot + numAfterDot - j]) - 48) / (double)pow(10, numAfterDot-j);
 	}
 	printf("%f", num);
 	return num;
@@ -353,7 +353,7 @@ int main()
 	scanf("%s", str);
 	
 	//f();
-	convertChatToFloat(str);
+	convertChatToDouble(str);
 	//convert_to_list(str);
 }
 
