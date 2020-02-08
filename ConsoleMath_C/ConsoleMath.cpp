@@ -1,6 +1,7 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include<stdlib.h>
+#include<string.h>
 #define SIZE 255
 using namespace std;
 
@@ -16,7 +17,9 @@ struct list* init(char* a)  // а- значение первого узла
 	struct list* lst;
 	// выделение памяти под корень списка
 	lst = (struct list*)malloc(sizeof(struct list));
-	lst->field = a;
+	char* tmp = (char*)malloc(SIZE * sizeof(char));
+	strcpy(tmp,a);
+	lst->field =tmp;
 	lst->next = NULL; // указатель на следующий узел
 	lst->prev = NULL; // указатель на предыдущий узел
 	return(lst);
@@ -28,7 +31,9 @@ struct list* addelem(list* lst, char* value)
 	temp = (struct list*)malloc(sizeof(list));
 	p = lst->next; // сохранение указателя на следующий узел
 	lst->next = temp; // предыдущий узел указывает на создаваемый
-	temp->field = value; // сохранение поля данных добавляемого узла
+	char* tmp = (char*)malloc(SIZE * sizeof(char));
+	strcpy(tmp, value);
+	temp->field = tmp; // сохранение поля данных добавляемого узла
 	temp->next = p; // созданный узел указывает на следующий узел
 	temp->prev = lst; // созданный узел указывает на предыдущий узел
 	if (p != NULL)
@@ -77,7 +82,7 @@ bool isNumber(char value)
 	}
 	catch (int e)
 	{
-		printf("Error with type");
+	//	printf("Error with type");
 		return false;
 	}
 	value = int(value);
@@ -97,7 +102,7 @@ bool isSign(char value)
 	}
 	catch (int e)
 	{
-		printf("Error with type");
+		//printf("Error with type");
 		return false;
 	}
 	value = int(value);
@@ -117,7 +122,7 @@ bool isPoint(char value)
 	}
 	catch (int e)
 	{
-		printf("Error with type");
+		//printf("Error with type");
 		return false;
 	}
 	value = int(value);
@@ -160,9 +165,89 @@ void f()
 		free(x);
 	}
 }
-/*
+
 void convert_to_list(char* str)
-{
+{ 
+	int i = 0;
+	bool prevIsPoint = false;
+	bool isFloatNumber = false;
+	bool firstNum = true;
+	int j = 0;
+	int k = 0;
+	char* tmp = (char*)malloc(1 * sizeof(char));
+	char* x;
+	list* lst = NULL;
+	while (1)
+	{
+		if (!isFloatNumber)
+		{
+			if (tmp != NULL)
+			{
+				tmp = (char*)realloc(tmp, 1 * sizeof(char));
+				tmp[0] = char(0);
+			}
+		}
+		if (isNumber(str[i]))
+		{
+			tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
+			tmp[j] = (char)str[i];
+			j++;
+			i++;
+			isFloatNumber = true;
+			prevIsPoint = true;
+			continue;
+		}
+		else
+			if (isPoint(str[i]))
+			{
+				if (prevIsPoint)
+				{
+					tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
+					tmp[j] = str[i];
+					i++;
+					j++;
+					continue;
+				}
+
+			}
+			else
+			{
+				if (isFloatNumber)
+				{
+					tmp[j] = '\0';
+
+					isFloatNumber = false;
+				}
+				if (firstNum)
+				{
+					 lst = init(tmp);
+					 firstNum = false;
+					 listprint(lst);
+				}
+				else
+				{
+					lst = addelem(lst, tmp);
+					listprint(lst);
+				}
+				j = 0;
+				if (isSign(str[i]))
+				{
+					tmp = (char*)realloc(tmp, 2 * sizeof(char));
+					tmp[0] = str[i];
+					tmp[1] = '\0';
+					lst = addelem(lst, tmp);
+					listprint(lst);
+					tmp = (char*)realloc(tmp, 1 * sizeof(char));
+					tmp[0] = char(0);
+					i++;
+				}
+
+				
+			}
+		if (str[i] == NULL)
+			break;
+	}
+	/*
 	int i = 0;
 	bool prevIsPoint = false;
 	bool isFloatNumber = false;
@@ -201,15 +286,16 @@ void convert_to_list(char* str)
 }
 
 */
+}
 int main()
 {
-	/*
+	
 	char* str = (char*)malloc(SIZE*sizeof(char));
 	scanf("%s", str);
-	*/
-	f();
+	
+	//f();
 
-	//convert_to_list(str);
+	convert_to_list(str);
 }
 
 
