@@ -4,7 +4,22 @@
 #include<string.h>
 #define SIZE 255
 using namespace std;
+char** add_to_mas(char** mas, int position, char* elem, int number_chars)
+{
+	mas = (char**)realloc(mas, (position+1) * sizeof(char*));
+	mas[position] = (char*)malloc((number_chars+1) * sizeof(char));
+	strcpy( mas[position],elem);
+	return mas;
+}
 
+void print_mas(char** mas, int num)
+{
+	for (int i = 0; i < num;i++)
+	{
+		printf("%s ", mas[i]);
+	}
+}
+/*
 struct list
 {
 	char* field; // поле данных
@@ -72,7 +87,7 @@ void listprint(list* lst)
 		p = p->next; // переход к следующему узлу
 	} while (p != NULL); // условие окончания обхода
 }
-
+*/
 bool isNumber(char value)
 {
 	try 
@@ -174,9 +189,11 @@ void convert_to_list(char* str)
 	bool firstNum = true;
 	int j = 0;
 	int k = 0;
+	char** mas = (char**)malloc(1 * sizeof(char*));
+	*mas = (char*)malloc(1 * sizeof(char));
 	char* tmp = (char*)malloc(1 * sizeof(char));
 	char* x;
-	list* lst = NULL;
+//	list* lst = NULL;
 	while (1)
 	{
 		if (!isFloatNumber)
@@ -217,35 +234,46 @@ void convert_to_list(char* str)
 					tmp[j] = '\0';
 
 					isFloatNumber = false;
+					mas = add_to_mas(mas, k, tmp, j);
+					j = 0;
+					k++;
 				}
+	
+				/*
 				if (firstNum)
 				{
-					 lst = init(tmp);
+					strcpy(mas[0],tmp);
+					 //lst = init(tmp);
 					 firstNum = false;
-					 listprint(lst);
+					 //listprint(lst);
 				}
 				else
 				{
-					lst = addelem(lst, tmp);
-					listprint(lst);
+					strcpy(mas[k], tmp);
+					k++;
+					//lst = addelem(lst, tmp);
+					//listprint(lst);
 				}
-				j = 0;
+				*/
 				if (isSign(str[i]))
 				{
 					tmp = (char*)realloc(tmp, 2 * sizeof(char));
 					tmp[0] = str[i];
 					tmp[1] = '\0';
-					lst = addelem(lst, tmp);
-					listprint(lst);
-					tmp = (char*)realloc(tmp, 1 * sizeof(char));
-					tmp[0] = char(0);
+					//lst = addelem(lst, tmp);
+					//listprint(lst);
+					mas =add_to_mas(mas, k, tmp, 1);
 					i++;
+					k++;
 				}
 
 				
 			}
 		if (str[i] == NULL)
+		{
+			print_mas(mas, k);
 			break;
+		}
 	}
 	/*
 	int i = 0;
