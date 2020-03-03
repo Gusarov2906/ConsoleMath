@@ -5,6 +5,7 @@
 #include <math.h>
 #define SIZE 255
 using namespace std;
+//Function add element to array
 char** add_to_mas(char** mas, int position, char* elem, int number_chars)
 {
 	mas = (char**)realloc(mas, (position+1) * sizeof(char*));
@@ -13,6 +14,7 @@ char** add_to_mas(char** mas, int position, char* elem, int number_chars)
 	return mas;
 }
 
+//output array
 void print_mas(char** mas, int num)
 {
 	for (int i = 0; i < num;i++)
@@ -20,75 +22,29 @@ void print_mas(char** mas, int num)
 		printf("%s ", mas[i]);
 	}
 }
-/*
-struct list
-{
-	char* field; // поле данных
-	struct list* next; // указатель на следующий элемент
-	struct list* prev; // указатель на предыдущий элемент
-};
 
-struct list* init(char* a)  // а- значение первого узла
+//bool function T="-"
+bool isNegativeSign(char value)
 {
-	struct list* lst;
-	// выделение памяти под корень списка
-	lst = (struct list*)malloc(sizeof(struct list));
-	char* tmp = (char*)malloc(SIZE * sizeof(char));
-	strcpy(tmp,a);
-	lst->field =tmp;
-	lst->next = NULL; // указатель на следующий узел
-	lst->prev = NULL; // указатель на предыдущий узел
-	return(lst);
+	try
+	{
+		if (!int(value))
+			throw - 1;
+	}
+	catch (int e)
+	{
+		//	printf("Error with type");
+		return false;
+	}
+	value = int(value);
+	if (value == 45)
+		return true;
+	else
+		//printf("not a - ");
+		return false;
 }
 
-struct list* addelem(list* lst, char* value)
-{
-	struct list* temp, * p;
-	temp = (struct list*)malloc(sizeof(list));
-	p = lst->next; // сохранение указателя на следующий узел
-	lst->next = temp; // предыдущий узел указывает на создаваемый
-	char* tmp = (char*)malloc(SIZE * sizeof(char));
-	strcpy(tmp, value);
-	temp->field = tmp; // сохранение поля данных добавляемого узла
-	temp->next = p; // созданный узел указывает на следующий узел
-	temp->prev = lst; // созданный узел указывает на предыдущий узел
-	if (p != NULL)
-		p->prev = temp;
-	return(temp);
-}
-
-struct list* deletelem(list* lst)
-{
-	struct list* prev, * next;
-	prev = lst->prev; // узел, предшествующий lst
-	next = lst->next; // узел, следующий за lst
-	if (prev != NULL)
-		prev->next = lst->next; // переставляем указатель
-	if (next != NULL)
-		next->prev = lst->prev; // переставляем указатель
-	free(lst); // освобождаем память удаляемого элемента
-	return(prev);
-}
-
-struct list* deletehead(list* root)
-{
-	struct list* temp;
-	temp = root->next;
-	temp->prev = NULL;
-	free(root);   // освобождение памяти текущего корня
-	return(temp); // новый корень списка
-}
-
-void listprint(list* lst)
-{
-	struct list* p;
-	p = lst;
-	do {
-		printf("%s ", p->field); // вывод значения элемента p
-		p = p->next; // переход к следующему узлу
-	} while (p != NULL); // условие окончания обхода
-}
-*/
+//bool function T=int
 bool isNumber(char value)
 {
 	try 
@@ -109,6 +65,7 @@ bool isNumber(char value)
 		return false;
 }
 
+//function T="+-/*"
 bool isSign(char value)
 {
 	try
@@ -129,6 +86,7 @@ bool isSign(char value)
 	return false;
 }
 
+//function T="."
 bool isPoint(char value)
 {
 	try
@@ -149,7 +107,8 @@ bool isPoint(char value)
 	return false;
 }
 
-double convertChatToDouble(char* val)
+//convert from char* to double number
+double convertCharToDouble(char* val)
 {
 	int i = 0;
 	int numBeforeDot = 0;
@@ -178,7 +137,7 @@ double convertChatToDouble(char* val)
 	printf("%f", num);
 	return num;
 }
-
+/*
 void f()
 {
 	char* x, * tmp;
@@ -210,23 +169,22 @@ void f()
 		free(x);
 	}
 }
+*/
 
-void convert_to_list(char* str)
+//convert char* to array with char*(nums and signs in char)
+char** convert_to_list(char* str)
 { 
-	int i = 0;
-	bool prevIsPoint = false;
-	bool isFloatNumber = false;
-	bool firstNum = true;
-	int j = 0;
-	int k = 0;
+	int i = 0 , j =0  ,k = 0;
 	char** mas = (char**)malloc(1 * sizeof(char*));
 	*mas = (char*)malloc(1 * sizeof(char));
+	bool isNegative = false;
+	bool noPoint = true;
+	bool isFloatNum = false;
+	bool prevSign = false;
 	char* tmp = (char*)malloc(1 * sizeof(char));
-	char* x;
-//	list* lst = NULL;
-	while (1)
+	while (true)
 	{
-		if (!isFloatNumber)
+		if (!isFloatNum)
 		{
 			if (tmp != NULL)
 			{
@@ -234,127 +192,141 @@ void convert_to_list(char* str)
 				tmp[0] = char(0);
 			}
 		}
-		if (isNumber(str[i]))
+
+		if (i==0||prevSign)
 		{
-			tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
-			tmp[j] = (char)str[i];
-			j++;
-			i++;
-			isFloatNumber = true;
-			prevIsPoint = true;
-			continue;
-		}
-		else
-				if (isPoint(str[i]))
+			if (isNegativeSign(str[i]))
 			{
-				if (prevIsPoint)
-				{
-					tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
-					tmp[j] = str[i];
-					i++;
-					j++;
-					continue;
-				}
-
-			}
-			else
-			{
-				if (isFloatNumber)
-				{
-					tmp[j] = '\0';
-
-					isFloatNumber = false;
-					mas = add_to_mas(mas, k, tmp, j);
-					j = 0;
-					k++;
-				}
-	
-				/*
-				if (firstNum)
-				{
-					strcpy(mas[0],tmp);
-					 //lst = init(tmp);
-					 firstNum = false;
-					 //listprint(lst);
-				}
-				else
-				{
-					strcpy(mas[k], tmp);
-					k++;
-					//lst = addelem(lst, tmp);
-					//listprint(lst);
-				}
-				*/
-				if (isSign(str[i]))
-				{
-					tmp = (char*)realloc(tmp, 2 * sizeof(char));
-					tmp[0] = str[i];
-					tmp[1] = '\0';
-					//lst = addelem(lst, tmp);
-					//listprint(lst);
-					mas =add_to_mas(mas, k, tmp, 1);
-					i++;
-					k++;
-				}
-				
-
-				
-			}
-		if (str[i] == NULL)
-		{
-			print_mas(mas, k );
-			break;
-		}
-	}
-	/*
-	int i = 0;
-	bool prevIsPoint = false;
-	bool isFloatNumber = false;
-	int j = 0;
-	int k = 0;
-	char* tmp;
-	char* x;
-
-	while (1)
-	{
-		if (!isFloatNumber)
-		{
-			if (x != NULL)
-			{
-				x = (char*)malloc(1 * sizeof(char));
-				tmp = (char*)realloc(x, 1 * sizeof(char));
-				if (tmp != NULL)
-				{
-					x = tmp;
-					tmp[0] = char(0);
-				}
-				free(x);
-			}
-			if (isNumber(str[i]))
-			{
+				isNegative = true;
+				isFloatNum = true;
+				prevSign = false;
 				tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
 				tmp[j] = (char)str[i];
 				j++;
 				i++;
-				isFloatNumber = true;
-				prevIsPoint = true;
 				continue;
 			}
 		}
+
+		if (isNumber(str[i]))
+		{
+				tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
+				tmp[j] = str[i];
+				i++;
+				j++;
+				isFloatNum = true;
+				continue;
+		}
+
+		if (isPoint(str[i])&&noPoint)
+		{
+			noPoint = false;
+			tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
+			tmp[j] = str[i];
+			i++;
+			j++;
+			continue;
+		}
+
+		if (isFloatNum)
+		{
+			tmp[j] = '\0';
+
+			isFloatNum = false;
+			noPoint = true;
+			isNegative = false;
+			mas = add_to_mas(mas, k, tmp, j);
+			k++;
+			j = 0;
+		}
+		if (isSign(str[i]))
+		{
+			tmp = (char*)realloc(tmp, 2 * sizeof(char));
+			tmp[0] = str[i];
+			tmp[1] = '\0';
+			prevSign = true;
+			//lst = addelem(lst, tmp);
+			//listprint(lst);
+			mas = add_to_mas(mas, k, tmp, 1);
+			i++;
+			k++;
+		}
+		
+		if (str[i] == ' ')
+		{
+			i++;
+			continue;
+		}
+
+		if (str[i] == NULL)
+		{
+			print_mas(mas, k);
+			break;
+		}
+		
 	}
+	return(mas);
+}
+/*
+int get_size(char** mas)
+{
+	int i = 0;
+		while (mas[i])
+		{
+			i++;
+		}
+		return i;
+}
+*/
+float solve(char** mas)
+{
+	return 0;
+}
+/*
+void cut_mas(char** mas,int num)
+{
+	int i = num;
+	while (mas[i] != NULL && mas[i + 1] != NULL)
+	{
+		strcpy(mas[i], mas[i + 1]);
+		i++;
+	}
+	free(mas[i]);
+	free(mas[i - 1]);
 }
 
-*/
+char* exp_for_mas(char** mas)
+{
+	bool f = false;
+	while (true)
+	{
+		int i = 0;
+		while(mas[i]!=NULL)
+		{
+
+		}
+	}
+		
 }
+*/
 int main()
 {
 	
 	char* str = (char*)malloc(SIZE*sizeof(char));
-	scanf("%s", str);
-	
+	//	scanf_s("%s", str,SIZE);
+	gets_s(str, SIZE);
 	//f();
-	convertChatToDouble(str);
-	//convert_to_list(str);
+	//convertCharToDouble(str);
+	char** mas = (char**)malloc(SIZE * sizeof(char*));
+	*mas = (char*)malloc(SIZE * sizeof(char));
+	mas = convert_to_list(str);
+	/*int new_size = get_size(mas);
+	mas = (char**)realloc(mas, new_size * sizeof(char*));
+	print_mas(mas,get_size(mas));*/
+	free(str);
+	for (int i = 0; get_size(mas) < i; i++)
+		free(mas[i]);
+	free(mas);
 }
 
 
