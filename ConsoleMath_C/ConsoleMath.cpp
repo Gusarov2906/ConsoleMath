@@ -3,407 +3,305 @@
 #include<stdlib.h>
 #include<string.h>
 #include <math.h>
-#define SIZE 255
-using namespace std;
-//Function add element to array
-char** add_to_mas(char** mas, int position, char* elem, int number_chars)
+#include <conio.h>
+
+typedef struct stack_s stack;
+
+char* get_string();
+stack* create_stack(int);
+stack* add_to_stack(stack*, int);
+stack* delete_from_stack(stack*);
+stack* clear_stack(stack*);
+double read_stack(stack*);
+char* infix_to_postfix(char*);
+int priority(char);
+double solve(char*);
+
+struct stack_s
 {
-	mas = (char**)realloc(mas, (position+1) * sizeof(char*));
-	mas[position] = (char*)malloc((number_chars+1) * sizeof(char));
-	strcpy( mas[position],elem);
-	return mas;
-}
+	double num;
+	stack* next;
+};
 
-//output array
-void print_mas(char** mas, int num)
+char* get_string()
 {
-	for (int i = 0; i < num;i++)
-	{
-		printf("%s ", mas[i]);
-	}
-}
-
-//bool function T="-"
-bool isNegativeSign(char value)
-{
-	try
-	{
-		if (!int(value))
-			throw - 1;
-	}
-	catch (int e)
-	{
-		//	printf("Error with type");
-		return false;
-	}
-	value = int(value);
-	if (value == 45)
-		return true;
-	else
-		//printf("not a - ");
-		return false;
-}
-
-//bool function T=int
-bool isNumber(char value)
-{
-	try 
-	{
-		if (!int(value))
-			throw - 1;
-	}
-	catch (int e)
-	{
-	//	printf("Error with type");
-		return false;
-	}
-	value = int(value);
-	if (value > 47 && value < 58)
-		return true;
-	else
-		//printf("not a number");
-		return false;
-}
-
-//function T="+-/*"
-bool isSign(char value)
-{
-	try
-	{
-		if (!int(value))
-			throw - 1;
-	}
-	catch (int e)
-	{
-		//printf("Error with type");
-		return false;
-	}
-	value = int(value);
-	if (value == 42 || value == 43 || value == 45 || value == 47 || value == 94)
-		return true;
-	else
-		//printf("not a sign");
-	return false;
-}
-
-//function T="."
-bool isPoint(char value)
-{
-	try
-	{
-		if (!int(value))
-			throw - 1;
-	}
-	catch (int e)
-	{
-		//printf("Error with type");
-		return false;
-	}
-	value = int(value);
-	if (value == 46)
-		return true;
-	else
-		//printf("not a sign");
-	return false;
-}
-
-//convert from char* to double number
-double convertCharToDouble(char* val)
-{
-	int i = 0;
-	int numBeforeDot = 0;
-	int numAfterDot = 0;
-	while (val[i] != char(46) && val[i] != NULL)
-	{
-		numBeforeDot++;
-		i++;
-	}
-	while (val[i] != NULL)
-	{
-		numAfterDot++;
-		i++;;
-	}
-	if (numAfterDot > 0)
-		numAfterDot--;
-	double num =0;
-	for (int j = 0; j < numBeforeDot; j++)
-	{
-		num += (int(val[numBeforeDot - j-1])-48) * pow(10,j);
-	}
-	for (int j = 0; j < numAfterDot; j++)
-	{
-		num+= (double(val[numBeforeDot + numAfterDot - j]) - 48) / (double)pow(10, numAfterDot-j);
-	}
-	printf("%f", num);
-	return num;
-}
-/*
-void f()
-{
-	char* x, * tmp;
-
-	x = (char*)calloc(10,sizeof(char));
-
-	
-	if (x != NULL)
-	{
-		for (int i = 0; i < 9; i++)
+	int flag = 0;
+	char* string;
+	string = (char*)malloc(1);
+	char sym;
+	while (true) {
+		sym = getchar();
+		if (sym == '~')
 		{
-
-			x[i] = char(52 + i%2);
-		}
-		x[9] = '\0';
-		printf("\n%s\n", x);
-		tmp = (char*)realloc(x, 512);
-	
-		if (tmp != NULL)
-		{
-			for (int i = 9; i < 510; i++)
-			{
-				tmp[i] = char(52 + i % 2);
-			}
-			tmp[510] = '\0';
-			x = tmp;
-		}
-		printf("\n%s\n", x);
-		free(x);
-	}
-}
-*/
-
-//convert char* to array with char*(nums and signs in char)
-char** convert_to_list(char* str)
-{ 
-	int i = 0 , j =0  ,k = 0;
-	char** mas = (char**)malloc(1 * sizeof(char*));
-	*mas = (char*)malloc(1 * sizeof(char));
-	bool isNegative = false;
-	bool noPoint = true;
-	bool isFloatNum = false;
-	bool prevSign = false;
-	char* tmp = (char*)malloc(1 * sizeof(char));
-	while (true)
-	{
-		if (!isFloatNum)
-		{
-			if (tmp != NULL)
-			{
-				tmp = (char*)realloc(tmp, 1 * sizeof(char));
-				tmp[0] = char(0);
-			}
-		}
-
-		if (i==0||prevSign)
-		{
-			if (isNegativeSign(str[i]))
-			{
-				isNegative = true;
-				isFloatNum = true;
-				prevSign = false;
-				tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
-				tmp[j] = (char)str[i];
-				j++;
-				i++;
-				continue;
-			}
-		}
-
-		if (isNumber(str[i]))
-		{
-				tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
-				tmp[j] = str[i];
-				i++;
-				j++;
-				isFloatNum = true;
-				continue;
-		}
-
-		if (isPoint(str[i])&&noPoint)
-		{
-			noPoint = false;
-			tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
-			tmp[j] = str[i];
-			i++;
-			j++;
-			continue;
-		}
-
-		if (isFloatNum)
-		{
-			tmp[j] = '\0';
-
-			isFloatNum = false;
-			noPoint = true;
-			isNegative = false;
-			mas = add_to_mas(mas, k, tmp, j);
-			k++;
-			j = 0;
-		}
-		if (isSign(str[i]))
-		{
-			tmp = (char*)realloc(tmp, 2 * sizeof(char));
-			tmp[0] = str[i];
-			tmp[1] = '\0';
-			prevSign = true;
-			//lst = addelem(lst, tmp);
-			//listprint(lst);
-			mas = add_to_mas(mas, k, tmp, 1);
-			i++;
-			k++;
+			string = (char*)realloc(string, 1);
+			*(string) = sym;
+			string = (char*)realloc(string, 1 + 1);
+			*(string + 1) = '\0';
+			return string;
 		}
 		
+		if (sym == '\n' && !flag) continue;
+		if (sym == '\n') break;
+		string = (char*)realloc(string, flag + 1);
+		*(string + flag++) = sym;
+	}
+	string = (char*)realloc(string, flag + 1);
+	*(string + flag) = '\0';
+	return string;
+}
+
+stack* create_stack(int num)
+{
+	stack* st = (stack*)malloc(sizeof(stack));
+	st->next = nullptr;
+	st->num = num;
+	return st;
+}
+
+stack* add_to_stack(stack* st, int num)
+{
+	if (!st) return create_stack(num);
+	stack* new_st = (stack*)malloc(sizeof(stack));
+	new_st->next = st;
+	new_st->num = num;
+	return new_st;
+}
+
+stack* delete_from_stack(stack* st)
+{
+	if (!st) return nullptr;
+	stack* tmp = st->next;
+	free(st);
+	return tmp;
+}
+
+stack* clear_stack(stack* st)
+{
+	st = delete_from_stack(st);
+	if (st) clear_stack(st);
+	int a = 0;
+	return nullptr;
+}
+
+double read_stack(stack* st)
+{
+	if (!st)
+	{
+		puts("\nReading stack error!");
+		_getch();
+		return 0;
+	}
+	return st->num;
+}
+
+int priority(char c)
+{
+	switch (c)
+	{
+	case '*':case '/': return 3;
+	case '-':case '+': return 2;
+	case '(':case ')': return 1;
+	default: return 0;
+	}
+}
+
+char* infix_to_postfix(char* str)
+{
+	if (!str)
+	{
+		puts("\nEmpty str, error converting\a");
+		return 0;
+	}
+	int i = -1, checknum = 0, cur_new_pos = 0;
+	char* new_str = (char*)malloc(strlen(str) * 2 + 1);// *2 because spaces and +1\0
+	new_str[strlen(str) * 2] = '\0';
+	stack* st = nullptr;
+	while (str[++i] != '\0')
+	{
+		if (checknum)//For long nums
+		{
+			if (new_str[cur_new_pos - 1] != ' ') new_str[cur_new_pos++] = ' ';
+			checknum = 0;
+		}
 		if (str[i] == ' ')
 		{
-			i++;
+			free(new_str);
+			clear_stack(st);
+			puts("\nError because uses spaces!\a");
+			return 0;
+		}
+		else if (str[i] >= '0' && str[i] <= '9')
+		{
+			new_str[cur_new_pos++] = str[i];
 			continue;
 		}
-
-		if (str[i] == NULL)
+		checknum = 1;
+		if (str[i] == '(')
 		{
-			print_mas(mas, k);
+			
+			if (i && !priority(str[i - 1]) || str[i + 1] == '\0' || priority(str[i + 1]) > 1 || str[i + 1] == ')')
+			{
+				free(new_str);
+				clear_stack(st);
+				puts("\nError near'('!\a");
+				return 0;
+			}
+			st = add_to_stack(st, '(');
+			continue;
+		}
+		else if (str[i] == ')')
+		{
+			if (!priority(str[i + 1]) && str[i + 1] != '\0' || !i || priority(str[i - 1]) > 1 || str[i - 1] == '(')
+			{
+				free(new_str);
+				clear_stack(st);
+				puts("\nError near')'!\a");
+				return 0;
+			}
+			char stack_oper;
+			while (true)
+			{
+				if (!st)
+				{
+					free(new_str);
+					puts("\nError with parentheses!\a");
+					return 0;
+				}
+				if ((stack_oper = read_stack(st)) != '(')
+				{
+					if (new_str[cur_new_pos - 1] != ' ') new_str[cur_new_pos++] = ' ';
+					new_str[cur_new_pos++] = stack_oper;
+					st = delete_from_stack(st);
+					continue;
+				}
+				st = delete_from_stack(st); //delete '('
+				if (new_str[cur_new_pos - 1] != ' ') new_str[cur_new_pos++] = ' ';
+				break;
+			}
+			continue;
+		}
+		else if (priority(str[i]))//if it =-/*
+		{
+			if (!i || priority(str[i - 1]) > 1 || str[i + 1] == '\0')
+			{
+				free(new_str);
+				clear_stack(st);
+				puts("\nBad signs!\a");
+				return 0;
+			}
+			char stack_oper;
+			while (true)
+			{
+				if (st)
+				{
+					if (priority(str[i]) <= priority((stack_oper = read_stack(st))))//if priority <= stack
+					{
+						if (new_str[cur_new_pos - 1] != ' ') new_str[cur_new_pos++] = ' ';
+						new_str[cur_new_pos++] = stack_oper;
+						st = delete_from_stack(st);
+						continue;
+					}
+				}
+				st = add_to_stack(st, str[i]);
+				break;
+			}
+			continue;
+		}
+		free(new_str);
+		clear_stack(st);
+		puts("\nBad symbols!\a");
+		getchar();
+		return nullptr;
+	}
+	while (true)//Operands from stack to str
+	{
+		if (!st) break;
+		if (new_str[cur_new_pos - 1] != ' ') new_str[cur_new_pos++] = ' ';
+		new_str[cur_new_pos++] = read_stack(st);
+		if (new_str[cur_new_pos - 1] == '(')
+		{
+			clear_stack(st);
+			puts("\nError with parentheses!\a");
+			getchar();
+			return nullptr;
+		}
+		st = delete_from_stack(st);
+	}
+	new_str[cur_new_pos] = '\0';
+	free(str);
+	return new_str;
+}
+
+double solve(char* str)//str = postfix
+{
+	if (!str)
+	{
+		puts("\nEmpty str, error \a");
+		return 0;
+	}
+	double result;
+	int i = -1, num = -1;
+	stack* st = nullptr;
+	while (str[++i] != '\0')
+	{
+		if (str[i] >= '0' && str[i] <= '9')
+		{
+			if (num == -1) num = 0;
+			num = num * 10 + str[i] - 48;
+			continue;
+		}
+		if (num != -1) st = add_to_stack(st, num);
+		num = -1;
+		switch (str[i])
+		{
+		case '+':
+			st->next->num += st->num;
+			st = delete_from_stack(st);
+			break;
+		case '-':
+			st->next->num -= st->num;
+			st = delete_from_stack(st);
+			break;
+		case '*':
+			st->next->num *= st->num;
+			st = delete_from_stack(st);
+			break;
+		case '/':
+			if (!st->num)
+			{
+				clear_stack(st);
+				puts("\ndivision by zero\a");
+				return 0;
+			}
+			st->next->num /= st->num;
+			st = delete_from_stack(st);
 			break;
 		}
-		
 	}
-	return(mas);
-}
-/*
-int get_size(char** mas)
-{
-	int i = 0;
-		while (mas[i])
-		{
-			i++;
-		}
-		return i;
-}
-*/
-float solve(char** mas)
-{
-	return 0;
-}
-/*
-void cut_mas(char** mas,int num)
-{
-	int i = num;
-	while (mas[i] != NULL && mas[i + 1] != NULL)
-	{
-		strcpy(mas[i], mas[i + 1]);
-		i++;
-	}
-	free(mas[i]);
-	free(mas[i - 1]);
+	result = read_stack(st);
+	clear_stack(st);
+	return result;
 }
 
-char* exp_for_mas(char** mas)
-{
-	bool f = false;
-	while (true)
-	{
-		int i = 0;
-		while(mas[i]!=NULL)
-		{
-
-		}
-	}
-		
-}
-*/
 int main()
 {
-	
-	char* str = (char*)malloc(SIZE*sizeof(char));
-	//	scanf_s("%s", str,SIZE);
-	gets_s(str, SIZE);
-	//f();
-	//convertCharToDouble(str);
-	char** mas = (char**)malloc(SIZE * sizeof(char*));
-	*mas = (char*)malloc(SIZE * sizeof(char));
-	mas = convert_to_list(str);
-	/*int new_size = get_size(mas);
-	mas = (char**)realloc(mas, new_size * sizeof(char*));
-	print_mas(mas,get_size(mas));*/
-	free(str);
-	for (int i = 0; get_size(mas) < i; i++)
-		free(mas[i]);
-	free(mas);
-}
-
-
-/*
-while (1)
-{
-	if (!isFloatNumber)
+	stack* st = nullptr;
+	printf("  ConsoleMath\n  If u want to finish wtite '~'\n");
+	while (true)
 	{
-		if (tmp != NULL)
-		{
-			tmp = (char*)realloc(tmp, 1 * sizeof(char));
-			tmp[0] = char(0);
-		}
-	}
-	if (isNumber(str[i]))
-	{
-		tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
-		tmp[j] = (char)str[i];
-		j++;
-		i++;
-		isFloatNumber = true;
-		prevIsPoint = true;
-		continue;
-	}
-	else
-		if (isPoint(str[i]))
-		{
-			if (prevIsPoint)
-			{
-				tmp = (char*)realloc(tmp, (j + 1) * sizeof(char));
-				tmp[j] = str[i];
-				i++;
-				j++;
-				continue;
-			}
-
-		}
-		else
-		{
-			isFloatNumber = false;
-			list lst = *init(tmp);
-			listprint(&lst);
-			j = 0;
-			i++;
-			if (isSign(str[i]))
-				printf("Sign: %c \n", str[i]);
-		}
-	if (str[i] == NULL)
-		break;
-}
-*/
-
-/*
-for (int i = 0; i < SIZE; i++) //fill all str by symbol"E" which means that is empty
-{
-	str[i] = char(69);
-}
-*/
-/*
-	int i = 0;
-	while(1)
-	{
-		if (isNumber(str[i]))
-			printf("Number: %c \n",str[i]);
-		else
-			if (isPoint(str[i]))
-				printf("Point: %c \n", str[i]);
-			else
-				if (isSign(str[i]))
-					printf("Sign: %c \n", str[i]);
-		i++;
-		if (str[i] == NULL)
+		printf("Write expression: ");
+		char* str = get_string();
+		if (!strncmp(str,"~",1))
 			break;
+		str = infix_to_postfix(str);
+		//printf("%s", str);
+		//printf("\n");
+		double result;
+		result = solve(str);
+		printf("%lf", result); 
+		free(str);
+		printf("\n");
 	}
+}
 
-	*/
-
-
-
-
+ 
