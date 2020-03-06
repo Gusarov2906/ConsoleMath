@@ -31,14 +31,7 @@ char* get_string()
 	char sym;
 	while (true) {
 		sym = getchar();
-		if (sym == '~')
-		{
-			string = (char*)realloc(string, 1);
-			*(string) = sym;
-			string = (char*)realloc(string, 1 + 1);
-			*(string + 1) = '\0';
-			return string;
-		}
+		
 		
 		if (sym == '\n' && !flag) continue;
 		if (sym == '\n') break;
@@ -125,10 +118,13 @@ char* infix_to_postfix(char* str)
 		}
 		if (str[i] == ' ')
 		{
+			/*
 			free(new_str);
 			clear_stack(st);
 			puts("\nError because uses spaces!\a");
 			return 0;
+			*/
+			continue;
 		}
 		else if (str[i] >= '0' && str[i] <= '9')
 		{
@@ -136,6 +132,7 @@ char* infix_to_postfix(char* str)
 			continue;
 		}
 		checknum = 1;
+		
 		if (str[i] == '(')
 		{
 			
@@ -180,7 +177,7 @@ char* infix_to_postfix(char* str)
 			}
 			continue;
 		}
-		else if (priority(str[i]))//if it =-/*
+		else if (priority(str[i]))//if it +-/*
 		{
 			if (!i || priority(str[i - 1]) > 1 || str[i + 1] == '\0')
 			{
@@ -210,7 +207,6 @@ char* infix_to_postfix(char* str)
 		free(new_str);
 		clear_stack(st);
 		puts("\nBad symbols!\a");
-		getchar();
 		return nullptr;
 	}
 	while (true)//Operands from stack to str
@@ -294,6 +290,8 @@ int main()
 		if (!strncmp(str,"~",1))
 			break;
 		str = infix_to_postfix(str);
+		if (!str)
+			continue;
 		//printf("%s", str);
 		//printf("\n");
 		double result;
